@@ -40,7 +40,4 @@ def get_news(input, quantity=1):
 def search_supplier(supplier):
 	supplier.articles = get_news(supplier.name)
 
-def main():
-	print(get_news('cva'))
 
-#main()
