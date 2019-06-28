@@ -1,0 +1,2 @@
+- Add list of words for different importance categories (ex: bankrupt will create a high level warning, stock a mid level)
+- Sort alphabetically, by level of importance, by number of articles found in the past x days
