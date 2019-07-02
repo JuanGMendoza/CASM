@@ -29,11 +29,8 @@ class checkerGui:
 		self.arrow_photo = tk.PhotoImage(file='images/arrow.png')
 		self.gear_photo = tk.PhotoImage(file = 'images/gear.png')
 		self.plus_photo = tk.PhotoImage(file = 'images/add2.png')
-		self.lwarning_photo = tk.PhotoImage(file = 'images/low_warning.png')
+		self.lwarning_photo = tk.PhotoImage(file = 'images/low_warning2.png')
 
-
-		
-	
 		self.add_button = tk.Button(self.window, command = self.__pop_up)
 		self.add_button.config(image=self.plus_photo, width = '30', height = '30', relief=tk.FLAT,background='white')
 		self.add_button.grid(row=0,column=0)
@@ -42,10 +39,7 @@ class checkerGui:
 		self.settings_button.config(image=self.gear_photo, width = '30', height = '30', relief=tk.FLAT,background='white')
 		self.settings_button.grid(row=0,column=1)
 		
-	
-		
 
-		
 		self.line = ttk.Separator(self.window, orient='horizontal')
 		self.line.place(x=0, y=35, relwidth=1)
 	
@@ -105,6 +99,8 @@ class checkerGui:
 		self.drop_button.config(image=self.arrow_photo, width='39', height='32',relief=tk.FLAT,background='white')
 		self.drop_button.place(y = (len(self.suppliers) * 50), x = 650)
 
+		#save = open('Suppliers.txt', 'a')
+		#save.write()
 
 
 
@@ -121,15 +117,7 @@ class checkerGui:
 			
 
 		except:
-			print('Error exporting file')
-
-	#def search_supplier(self):
-
-
-
-
-
-
+			print('Error importing file')
 
 
 test = checkerGui()
