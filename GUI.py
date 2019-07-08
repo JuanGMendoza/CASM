@@ -1,10 +1,11 @@
 import tkinter as tk
 import tkinter.filedialog as filedialog
 from tkinter import messagebox
-import ttk
+from tkinter import ttk
 import ctypes
 from tkinter import BOTH, RAISED, X, Y
 from Checker import *
+import time
 
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
@@ -12,6 +13,9 @@ class supplier:
 	def __init__(self,name):
 		self.name = name
 		self.articles = []
+		self.Separator = ''
+		self.article_label = ''
+		self.warning_label = ''
 
 class checkerGui:
 
@@ -19,6 +23,7 @@ class checkerGui:
 
 		self.suppliers = []
 		self.menu_offset = 30
+		self.scroller_items = []
 
 		self.window = tk.Tk()
 		self.window.title("Checker")
@@ -28,7 +33,7 @@ class checkerGui:
 
 		self.arrow_photo = tk.PhotoImage(file='images/arrow.png')
 		self.gear_photo = tk.PhotoImage(file = 'images/gear.png')
-		self.plus_photo = tk.PhotoImage(file = 'images/add2.png')
+		self.plus_photo = tk.PhotoImage(file = 'images/add.png')
 		self.lwarning_photo = tk.PhotoImage(file = 'images/low_warning2.png')
 
 		self.add_button = tk.Button(self.window, command = self.__pop_up)
@@ -45,16 +50,23 @@ class checkerGui:
 	
 		
 		self.window.mainloop()
-
+	# def __slide(self, start, end):
+	# 	i = 35
+	# 	for i in range (start, end, .01)
+	# 		self.line.place(x=0, y=i, relwidth=1)
+	# 		self.window.update()
+	# 		i += .01
 	def __pop_up(self):
 
 
 		self.popup_window = tk.Toplevel()
 		self.popup_window.title('New Suppliers')
 		self.popup_window.geometry("400x150")
-		tk.Label(self.popup_window, text='Enter Supplier name or Path:').pack(pady=10,padx=10)
+		self.text_label = tk.Label(self.popup_window, text='Enter Supplier name or Path:')
 		self.supplier_entry = tk.Entry(self.popup_window, width = 25)
+		self.text_label.pack(pady=10,padx=10)
 		self.supplier_entry.pack()
+
 
 		buttons_panel = tk.Frame(self.popup_window)
 
@@ -87,37 +99,32 @@ class checkerGui:
 		temp_supplier = supplier(self.text)
 		search_supplier(temp_supplier)
 		self.suppliers.append(temp_supplier)
-		number = len(temp_supplier.articles)
+		number_of_articles = len(temp_supplier.articles)
 		self.supplier_label = tk.Label(self.window, text=self.text,background='white').place(y = (len(self.suppliers) * 50), x = 0)
 
-		if number > 0:
+		if number_of_articles > 0:
 			tk.Label(self.window,image = self.lwarning_photo,background='white').place(y = (len(self.suppliers) * 50)-5, x = 610)
-		self.article_label = tk.Label(self.window, text=number,background='white').place(y = (len(self.suppliers) * 50), x = 590)
+		self.article_label = tk.Label(self.window, text=number_of_articles,background='white').place(y = (len(self.suppliers) * 50), x = 590)
 
 		self.line = ttk.Separator(self.window, orient='horizontal').place(y=(len(self.suppliers)*50)+40, x = 0,relwidth=1)
 		self.drop_button = tk.Button(self.window)
 		self.drop_button.config(image=self.arrow_photo, width='39', height='32',relief=tk.FLAT,background='white')
 		self.drop_button.place(y = (len(self.suppliers) * 50), x = 650)
 
-		#save = open('Suppliers.txt', 'a')
-		#save.write()
+
 
 
 
 	def browse_button_func(self):
-		try:
-			suppliers = []
-			self.directory = filedialog.askopenfile(parent=self.popup_window,mode='rb',title='Choose a file').name
-			self.popup_window.destroy()
-			with open(self.directory,'r') as file_object:	
+		suppliers = []
+		self.directory = filedialog.askopenfile(parent=self.popup_window,mode='rb',title='Choose a file').name
+		self.popup_window.destroy()
+		with open(self.directory,'r') as file_object:	
 
-				for line in file_object:
-					self.text = line
-					self.add_supplier()
+			for line in file_object:
+				self.text = line
+				self.add_supplier()
 			
-
-		except:
-			print('Error importing file')
 
 
 test = checkerGui()

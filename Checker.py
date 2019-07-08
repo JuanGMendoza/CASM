@@ -1,7 +1,7 @@
 from googlesearch import search_news, get_page
 import re
 import articleDateExtractor
-
+import urllib.request
 
 
 class Article:
@@ -9,8 +9,9 @@ class Article:
 	def __init__(self):
 		self.title = ''
 		self.date = ''
+		self.url = ''
 
-def get_news(input, quantity=1):
+def get_news(input, quantity=10):
 
 	articles = []
 	
@@ -21,12 +22,13 @@ def get_news(input, quantity=1):
 	# 	date = '0-0-0'
 	# 	content = str(get_page(url))
 	# 	title = re.search('<title>(.+?)</title>', content)
-
+	# 	print(content)
 	# 	if title:
-	# 		date_time = articleDateExtractor.extractArticlePublishedDate(url) This is not working
-	# 		if date_time:
+	# 		#print(title)
+	# 		#date_time = articleDateExtractor.extractArticlePublishedDate(url) #This is not working
+	# 		if True:
 	# 			temp_article.title = title
-	# 			temp_article.date = date_time.date()
+	# 			temp_article.date = date
 	# 			articles.append(temp_article)
 
 	# 		else:
@@ -36,12 +38,25 @@ def get_news(input, quantity=1):
 	# 		print("ERROR: No title found on website " + url)
 
 	fake_article = Article()
+
 	fake_article.date = '0-0-0'
+
 	fake_article.title = 'test article'
+
 	articles.append(fake_article)
+
 	return articles
 
 def search_supplier(supplier):
 	supplier.articles = get_news(supplier.name)
 
+
+def get_html(url):
+	fp = urllib.request.urlopen(url)
+	mybytes = fp.read()
+
+	mystr = mybytes.decode("utf8")
+	fp.close()
+
+	return mystr
 
