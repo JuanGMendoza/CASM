@@ -1,12 +1,12 @@
 import tkinter as tk
 import tkinter.filedialog as filedialog
 from tkinter import messagebox
-import ttk
+from tkinter import ttk
 import ctypes
 from tkinter import BOTH, RAISED, X, Y
 from Checker import *
 
-ctypes.windll.shcore.SetProcessDpiAwareness(1)
+# ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
 class supplier:
 	def __init__(self,name):

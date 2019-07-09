@@ -1,0 +1,2 @@
+google>=2.0.0
+articleDateExtractor>=0.20
