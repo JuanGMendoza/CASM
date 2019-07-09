@@ -5,6 +5,7 @@ from tkinter import ttk
 import ctypes
 from tkinter import BOTH, RAISED, X, Y
 from Checker import *
+from PIL import ImageTk, Image
 
 # ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
@@ -26,10 +27,10 @@ class checkerGui:
 		self.window.resizable(0, 0)
 		self.window.configure(background='white')
 
-		self.arrow_photo = tk.PhotoImage(file='images/arrow.png')
-		self.gear_photo = tk.PhotoImage(file = 'images/gear.png')
-		self.plus_photo = tk.PhotoImage(file = 'images/add2.png')
-		self.lwarning_photo = tk.PhotoImage(file = 'images/low_warning2.png')
+		self.arrow_photo = ImageTk.PhotoImage(Image.open('images/arrow.png'))
+		self.gear_photo = ImageTk.PhotoImage(Image.open('images/gear.png'))
+		self.plus_photo = ImageTk.PhotoImage(Image.open('images/add2.png'))
+		self.lwarning_photo = ImageTk.PhotoImage(Image.open('images/low_warning2.png'))
 
 		self.add_button = tk.Button(self.window, command = self.__pop_up)
 		self.add_button.config(image=self.plus_photo, width = '30', height = '30', relief=tk.FLAT,background='white')
