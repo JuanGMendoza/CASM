@@ -16,6 +16,10 @@ class supplier:
 		self.Separator = ''
 		self.article_label = ''
 		self.warning_label = ''
+		self.name_label = ''
+		self.drop_button = ''
+		self.clicked = False
+		self.index = 0
 
 class checkerGui:
 
@@ -50,12 +54,44 @@ class checkerGui:
 	
 		
 		self.window.mainloop()
-	# def __slide(self, start, end):
-	# 	i = 35
-	# 	for i in range (start, end, .01)
-	# 		self.line.place(x=0, y=i, relwidth=1)
-	# 		self.window.update()
-	# 		i += .01
+	def __slide(self, index):
+
+		temp_supplier = self.suppliers[index]
+		if not temp_supplier.clicked:
+			i = 0
+			while (i < 40):
+				temp_supplier.Separator.place(y=((index+1)*50)+40 + i, x = 0,relwidth=1)
+				for j in range(index + 1,len(self.suppliers)):
+					
+					temp_supplier2 = self.suppliers[j]
+			 		
+					temp_supplier2.drop_button.place(y = ((j+1) * 50) + i, x = 650)
+					temp_supplier2.warning_label.place(y = ((j+1) * 50)-5 + i, x = 610)
+					temp_supplier2.article_label.place(y = ((j+1) * 50) + i, x = 590)
+					temp_supplier2.name_label.place(y = ((j+1) * 50)+i, x = 0)
+					temp_supplier2.Separator.place(y= ((j+1) *50)+40 + i, x = 0,relwidth=1)
+				self.window.update()
+				
+				i += 1
+			temp_supplier.clicked = True
+		else:
+			i = 40
+			while (i > 0):
+				temp_supplier.Separator.place(y=((index+1)*50)+40 + i, x = 0,relwidth=1)
+				for j in range(len(self.suppliers)-1, index , -1):
+					
+					temp_supplier2 = self.suppliers[j]
+			 		
+					temp_supplier2.drop_button.place(y = ((j+1) * 50) + i, x = 650)
+					temp_supplier2.warning_label.place(y = ((j+1) * 50)-5 + i, x = 610)
+					temp_supplier2.article_label.place(y = ((j+1) * 50) + i, x = 590)
+					temp_supplier2.name_label.place(y = ((j+1) * 50) + i, x = 0)
+					temp_supplier2.Separator.place(y= ((j+1) *50)+40 + i, x = 0,relwidth=1)
+				self.window.update()
+
+				
+				i -= 1
+			temp_supplier.clicked = False
 	def __pop_up(self):
 
 
@@ -98,18 +134,28 @@ class checkerGui:
 
 		temp_supplier = supplier(self.text)
 		search_supplier(temp_supplier)
+		temp_supplier.index = len(self.suppliers)
 		self.suppliers.append(temp_supplier)
+
+		
+		
 		number_of_articles = len(temp_supplier.articles)
-		self.supplier_label = tk.Label(self.window, text=self.text,background='white').place(y = (len(self.suppliers) * 50), x = 0)
+		temp_supplier.name_label = tk.Label(self.window, text=self.text,background='white')
+		temp_supplier.name_label.place(y = (len(self.suppliers) * 50), x = 0)
 
-		if number_of_articles > 0:
-			tk.Label(self.window,image = self.lwarning_photo,background='white').place(y = (len(self.suppliers) * 50)-5, x = 610)
-		self.article_label = tk.Label(self.window, text=number_of_articles,background='white').place(y = (len(self.suppliers) * 50), x = 590)
+		
+		temp_supplier.warning_label = tk.Label(self.window,image = self.lwarning_photo,background='white')
+		temp_supplier.warning_label.place(y = (len(self.suppliers) * 50)-5, x = 610)
 
-		self.line = ttk.Separator(self.window, orient='horizontal').place(y=(len(self.suppliers)*50)+40, x = 0,relwidth=1)
-		self.drop_button = tk.Button(self.window)
-		self.drop_button.config(image=self.arrow_photo, width='39', height='32',relief=tk.FLAT,background='white')
-		self.drop_button.place(y = (len(self.suppliers) * 50), x = 650)
+		temp_supplier.article_label = tk.Label(self.window, text=number_of_articles,background='white')
+		temp_supplier.article_label.place(y = (len(self.suppliers) * 50), x = 590)
+
+		temp_supplier.Separator = ttk.Separator(self.window, orient='horizontal')
+		temp_supplier.Separator.place(y=(len(self.suppliers)*50)+40, x = 0,relwidth=1)
+
+		temp_supplier.drop_button = tk.Button(self.window, command = lambda: self.__slide(temp_supplier.index))
+		temp_supplier.drop_button.config(image=self.arrow_photo, width='39', height='32',relief=tk.FLAT,background='white')
+		temp_supplier.drop_button.place(y = (len(self.suppliers) * 50), x = 650)
 
 
 
