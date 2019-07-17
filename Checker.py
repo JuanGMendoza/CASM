@@ -74,24 +74,19 @@ def get_news(input, quantity=10):
 
 	# 		print("ERROR: No title found on website " + url)
 
-
-
 	fake_article = Article()
+	fake_article2 = Article()
 
+	
 
-
-	fake_article.date = '0-0-0'
-
-
-
-	fake_article.title = 'test article'
-
-
-
+	fake_article.title = 'Heat Pipes Market: Industry Latest Trends & Global Outlook 2016-2024'
+	fake_article.url = 'http://zmrindustryanalysis.com/7971/heat-pipes-market-industry-latest-trends-global-outlook-2016-2024/'
+	
 	articles.append(fake_article)
-
-
-
+	fake_article2.title = "google"
+	fake_article2.url = 'http://google.com'
+	articles.append(fake_article2)
+	print(articles)
 	return articles
 
 
@@ -99,24 +94,3 @@ def get_news(input, quantity=10):
 def search_supplier(supplier):
 
 	supplier.articles = get_news(supplier.name)
-
-
-
-
-
-# def get_html(url):
-
-# 	fp = urllib.request.urlopen(url)
-
-# 	mybytes = fp.read()
-
-
-
-# 	mystr = mybytes.decode("utf8")
-
-# 	fp.close()
-
-
-
-# 	return mystr
-
