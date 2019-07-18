@@ -26,21 +26,56 @@ class checkerGui:
 
 	def __init__(self):
 
+
+		self.window = tk.Tk()
+		self.window.title("Checker")
+		self.window.geometry("700x800")
+		self.window.resizable(0, 0)
+
+		filename = tk.PhotoImage(file = "images/login.png")
+		button_pic = tk.PhotoImage(file = "images/login_button.png")
+
+		self.background_label = tk.Label(self.window, image=filename)
+		self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+		self.login_entry = tk.Entry(self.window, width = 30, relief = 'flat', font=("Helvetica", 15), fg='gray',justify='center', bg='#F9FAFC')
+		self.login_entry.place(x=100,y=360)
+
+		self.pass_entry = tk.Entry(self.window, width = 30, relief = 'flat', font=("Helvetica", 15), fg='gray', show="*",justify='center', bg = "#F9FAFC")
+		self.pass_entry.place(x=100,y=500)
+
+		self.login_button = tk.Button(self.window, width=370, height = 60,command=self.login, image = button_pic, relief = 'flat')
+		self.login_button.place(x=145,y=690)
+		
+
+
+		self.window.mainloop()
+
+	def login(self):
+		self.background_label.destroy()
+		self.login_entry.destroy()
+		self.pass_entry.destroy()
+		self.login_button.destroy()
+		#self.loading()
+		self.tool_screen()
+	def loading(self):
+		gif = tk.PhotoImage(file ='images/arrow2.png')
+		self.label = tk.Label(self.window, image=gif)
+		self.label.place(x=0,y=0, relwidth=1, relheight=1)
+	def tool_screen(self):
+
+
 		self.suppliers = []
 		self.menu_offset = 30
 		self.scroller_items = []
 
-		self.window = tk.Tk()
-		self.window.title("Checker")
-		self.window.geometry("700x900")
-		self.window.resizable(0, 0)
 		self.window.configure(background='#009EDC')
 
-		self.arrow_photo = tk.PhotoImage(file='images/arrow2.png')
-		self.gear_photo = tk.PhotoImage(file = 'images/gear.png')
-		self.plus_photo = tk.PhotoImage(file = 'images/add2.png')
-		self.lwarning_photo = tk.PhotoImage(file = 'images/low_warning22.png')
-		self.plane_photo = tk.PhotoImage(file = 'images/planeb.png')
+		self.arrow_photo = tk.PhotoImage(file='./images/arrow2.png')
+		self.gear_photo = tk.PhotoImage(file = './images/gear.png')
+		self.plus_photo = tk.PhotoImage(file = './images/add3.png')
+		self.lwarning_photo = tk.PhotoImage(file = './images/low_warning22.png')
+		self.plane_photo = tk.PhotoImage(file = './images/planeb.png')
 
 		self.add_button = tk.Button(self.window, command = self.__pop_up)
 		self.add_button.config(image=self.plus_photo, width = '30', height = '30', relief=tk.FLAT,background='#009EDC')
@@ -55,9 +90,6 @@ class checkerGui:
 		self.database_button.config(command=self.add_article)
 		self.line = ttk.Separator(self.window, orient='horizontal')
 		self.line.place(x=0, y=35, relwidth=1)
-	
-		self.window.mainloop()
-
 	def add_article(self):
 		self.popup_window = tk.Toplevel()
 		self.popup_window.title('Cisco Database')
