@@ -86,7 +86,7 @@ def get_news(input, quantity=10):
 	fake_article2.title = "google"
 	fake_article2.url = 'http://google.com'
 	articles.append(fake_article2)
-	print(articles)
+	
 	return articles
 
 
