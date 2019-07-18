@@ -13,10 +13,26 @@ class Article:
 	def __repr__(self):
 		return "Title: {}\nDate: {}\nURL: {}\n\n".format(self.title, self.date, self.url)
 
-def get_news(input, quantity=10):
+
+def get_news(supplier, quantity):
+	"""
+	Retrieves news about the provided supplier by looking at the Google News RSS feed.
+
+	Parameters:
+	supplier (Supplier): a Supplier class object to search the news for (TODO: change to this, right now string)
+    quantity (int): the number of news articles to return
+
+	Returns:
+	list (Article): list of the first 'quantity' number of results
+	"""
+	if quantity > 100 or quantity <= 0:
+		raise Exception(
+			"Quantity should not be greater than 100 or less than or equal to 0. The value of quantity was {}."
+			.format(quantity))
+
 	articles = []
 
-	news_url = "https://news.google.com/rss/search?q={}".format(input)
+	news_url = "https://news.google.com/rss/search?q={}".format(supplier)
 
 	client = urlopen(news_url)
 	xml_page = client.read()
@@ -26,14 +42,15 @@ def get_news(input, quantity=10):
 	news_list = soup_page.findAll("item")
 
 	# Print news title, url and publish date
-	for news in news_list:
+	for count in range(0, quantity):
+		news = news_list[count]
 		articles.append(Article(news.title.text, news.pubDate.text, news.link.text))
 
 	return articles
 
 
-def search_supplier(supplier):
-	articles = get_news(supplier)
+def search_supplier(supplier, quantity=10):
+	articles = get_news(supplier, quantity)
 
 	for article in articles:
 		print(article)
