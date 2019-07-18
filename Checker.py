@@ -1,63 +1,45 @@
-from googlesearch import search_news, get_page
-import re
-import articleDateExtractor
-import urllib.request
+from bs4 import BeautifulSoup as soup
+from urllib.request import urlopen
 
 class Article:
-
-	def __init__(self):
-		self.title = ''
-		self.date = ''
-		self.url = ''
-
+	def __init__(self, title, date, url):
+		self.title = title
+		self.date = date
+		self.url = url
 
 	def __str__(self):
-		return "Title: {}, Date: {}".format(self.title, self.date)
+		return "Title: {}\nDate: {}\nURL: {}\n\n".format(self.title, self.date, self.url)
 
 	def __repr__(self):
-		return "Title: {}, Date: {}".format(self.title, self.date)
+		return "Title: {}\nDate: {}\nURL: {}\n\n".format(self.title, self.date, self.url)
 
 def get_news(input, quantity=10):
 	articles = []
 
-	for url in search_news(input, tld="co.in", num=10, stop=quantity, pause=2): 
-		print(url)
-		temp_article = Article()
-		date = '0-0-0'
-		content = str(get_page(url))
-		title = re.search('<title>(.+?)</title>', content)
+	news_url = "https://news.google.com/rss/search?q={}".format(input)
 
-		if title:
-			date_time = articleDateExtractor.extractArticlePublishedDate(url)
-			if date_time:
-				temp_article.title = title
-				temp_article.date = date_time.date()
-				articles.append(temp_article)
+	client = urlopen(news_url)
+	xml_page = client.read()
+	client.close()
 
-			else:
-				pass
+	soup_page = soup(xml_page, "xml")
+	news_list = soup_page.findAll("item")
 
-		else:
-			print("ERROR: No title found on website " + url)
-
-	print("\n\n\n")
-
-	for article in articles:
-		print(article)
-		print("\n")
-
-	# fake_article = Article()
-	# fake_article.date = '0-0-0'
-	# fake_article.title = 'test article'
-	# articles.append(fake_article)
-	# return articles
+	# Print news title, url and publish date
+	for news in news_list:
+		articles.append(Article(news.title.text, news.pubDate.text, news.link.text))
 
 	return articles
 
 
 def search_supplier(supplier):
+	articles = get_news(supplier)
 
-	supplier.articles = get_news(supplier.name)
+	for article in articles:
+		print(article)
 
-#if __name__ == '__main__':
-#	get_news('Foxconn', 10)
+	return articles
+
+
+if __name__ == '__main__':
+	search_supplier("Apple")
