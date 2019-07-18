@@ -1,14 +1,15 @@
 from googlesearch import search_news, get_page
 import re
 import articleDateExtractor
-
-
+import urllib.request
 
 class Article:
 
 	def __init__(self):
 		self.title = ''
 		self.date = ''
+		self.url = ''
+
 
 	def __str__(self):
 		return "Title: {}, Date: {}".format(self.title, self.date)
@@ -16,10 +17,8 @@ class Article:
 	def __repr__(self):
 		return "Title: {}, Date: {}".format(self.title, self.date)
 
-def get_news(input, quantity=1):
-
+def get_news(input, quantity=10):
 	articles = []
-	
 
 	for url in search_news(input, tld="co.in", num=10, stop=quantity, pause=2): 
 		print(url)
@@ -53,11 +52,12 @@ def get_news(input, quantity=1):
 	# articles.append(fake_article)
 	# return articles
 
+	return articles
+
+
 def search_supplier(supplier):
+
 	supplier.articles = get_news(supplier.name)
 
-
-if __name__ == '__main__':
-	get_news('Foxconn', 10)
-
-
+#if __name__ == '__main__':
+#	get_news('Foxconn', 10)
