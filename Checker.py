@@ -34,6 +34,8 @@ def get_news(supplier, quantity):
 
 	news_url = "https://news.google.com/rss/search?q={}".format(supplier)
 
+	news_url = news_url.replace(' ', '%20')
+
 	client = urlopen(news_url)
 	xml_page = client.read()
 	client.close()
@@ -59,4 +61,4 @@ def search_supplier(supplier, quantity=10):
 
 
 if __name__ == '__main__':
-	search_supplier("Apple")
+	search_supplier("Advanced Micro Devices")
