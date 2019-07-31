@@ -1,2 +1,1 @@
-acquisition, merger, bankruptcy, negative cash flow,divesting, lawsuit, recall, line shutdown, lawsuit
-
+negative cash flow,divesting, recall, line shutdown, merger,lead
