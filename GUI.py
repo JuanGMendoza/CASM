@@ -34,7 +34,7 @@ class checkerGui:
 
 
 		self.window = tk.Tk()
-		self.window.title("SupMon")
+		self.window.title("CASM")
 		self.window.geometry("700x800")
 		self.window.resizable(0, 0)
 
@@ -292,7 +292,7 @@ class checkerGui:
 
 		self.int_var = tk.IntVar(value=3)
 		self.email_radio = tk.Radiobutton(self.popup_window,text = 'Email', bg='white',variable = self.int_var, value = 3)
-		self.webex_radio = tk.Radiobutton(self.popup_window,text = 'Webex', bg='white', variable = self.int_var, value = 4)
+		self.webex_radio = tk.Radiobutton(self.popup_window,text = 'Webex Teams', bg='white', variable = self.int_var, value = 4)
 		self.mobile_radio = tk.Radiobutton(self.popup_window,text = 'Mobile', bg='white',variable = self.int_var, value = 5)
 
 		self.save_button = tk.Button(self.popup_window, text='Save', command=self.save, bg='white')
@@ -388,6 +388,7 @@ class checkerGui:
 		temp_supplier.name_label = tk.Label(self.window, text=self.text,background='#0c4361',fg='white')
 		temp_supplier.name_label.place(y = (len(self.suppliers) * 50), x = 0)
 		self.window.update()
+		
 		if(temp_supplier.highest_warning == 2):
 			temp_supplier.warning_label = tk.Label(self.window,image = self.hwarning_photo,background='#0c4361')
 			temp_supplier.warning_label.place(y = (len(self.suppliers) * 50)-5, x = 910)
