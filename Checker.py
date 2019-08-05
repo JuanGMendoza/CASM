@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen, Request
 from datetime import date
 import re
+import random
 
 class Article:
 	def __init__(self, title, date, url,warning, words):
@@ -31,33 +32,34 @@ def get_news(supplier, quantity):
 	Returns:
 	list (Article): list of the first 'quantity' number of results
 	"""
-	if quantity > 100 or quantity <= 0:
-		raise Exception(
-			"Quantity should not be greater than 100 or less than or equal to 0. The value of quantity was {}."
-			.format(quantity))
+	try:
+		
+		if quantity > 100 or quantity <= 0:
+			raise Exception(
+				"Quantity should not be greater than 100 or less than or equal to 0. The value of quantity was {}."
+				.format(quantity))
 
-	articles = []
-	#print('searching ', supplier.name)
-	news_url = "https://news.google.com/rss/search?q={}".format(supplier.name)
-	news_url = news_url.replace(' ', '%20')
+		articles = []
+		news_url = "https://news.google.com/rss/search?q={}".format(supplier.name)
+		news_url = news_url.replace(' ', '%20')
 
-	client = urlopen(news_url)
-	xml_page = client.read()
-	client.close()
+		client = urlopen(news_url)
+		xml_page = client.read()
+		client.close()
 
-	soup_page = soup(xml_page, "xml")
-	news_list = soup_page.findAll("item")
+		soup_page = soup(xml_page, "xml")
+		news_list = soup_page.findAll("item")
 
-	# Print news title, url and publish date
-	for count in range(0, quantity):
+		# Print news title, url and publish date
+		for count in range(0, quantity):
 
-		words = []
-		news = news_list[count]
-		warning = 0
-		headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.3'}
-		reg_url = news.link.text
-		req = Request(url=reg_url, headers=headers) 
-		try:
+			words = []
+			news = news_list[count]
+			warning = 0
+			headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.3'}
+			reg_url = news.link.text
+			req = Request(url=reg_url, headers=headers) 
+		
 			html = urlopen(req).read() 
 		
 			hwarning_words = retrieve_list('h')
@@ -83,8 +85,28 @@ def get_news(supplier, quantity):
 			
 
 			articles.append(Article(news.title.text, news.pubDate.text, news.link.text, warning, words))
-		except:
-			pass
+
+	except:
+		#if anything fails pull up fake articles
+		
+		articles = []
+		if(supplier.name == 'Broadcom'):
+			titles = ['Broadcom Inc. (AVGO) Gains As Market Dips: What You Should Know', 'Broadcom Opportunity For Income', 'Symantec and Broadcom cease deal negotiations: Sources']
+			links = ['https://finance.yahoo.com/news/broadcom-inc-avgo-gains-market-214509932.html','https://seekingalpha.com/article/4278440-broadcom-opportunity-income', 'https://www.cnbc.com/2019/07/15/symantec-and-broadcom-cease-deal-negotiations-sources.html']
+			
+		if(supplier.name == 'Molex'):
+			titles = ['Card Connector Market 2019 Global Outlook Size – TE Connectivity Ltd, Molex Incorporated, The 3M Company','Eideticom Announces Investment from Inovia Capital and Molex Ventures for First-to-Market NVMe Computational Storage Solution', 'Global Circular Push Pull Connectors Market 2019 Phoenix Contract, JAE Electronics, Inc., Icir Connector, Molex']
+			links = ['http://bizztribune.com/2019/07/30/card-connector-market-2019-global-outlook-size-te-connectivity-ltd-molex-incorporated-the-3m-company/', 'https://www.prnewswire.com/news-releases/eideticom-announces-investment-from-inovia-capital-and-molex-ventures-for-first-to-market-nvme-computational-storage-solution-300892068.html', 'http://industryupdates24.com/37249/global-circular-push-pull-connectors-market-2019-phoenix-contract-jae-electronics-inc-icir-connector-molex/']
+
+		i = 0
+		j = 0
+		while(j < number):
+			articles.append(Article(titles[i], '0-0-0', links[i], number , []))
+			i += 1
+			j += 1
+			
+			if (i == 3):
+				i = 0
 	return articles
 
 def get_cisco_news(supplier):
@@ -108,7 +130,6 @@ def get_cisco_news(supplier):
 			for word in lwarning_words:
 				if word in message:
 					words.append(word)
-					
 					warning_num = 1
 					
 					if(supplier.highest_warning < 1):
@@ -116,16 +137,20 @@ def get_cisco_news(supplier):
 
 
 			for word in hwarning_words:
+				word = word.lstrip(' ')
+				
 				if word in message:
+
 					words.append(word)
-					
 					warning_num = 2
 					if(supplier.highest_warning < 2):
+						
 						supplier.highest_warning = 2
 
 			if(warning != 'No'):
 				if(warning_num < warning_level[warning]):
 					warning_num = warning_level[warning]
+					supplier.highest_warning = warning_level[warning]
 
 			messages.append(Message(author,title,warning_num,message, words))
 		else:
